@@ -27,6 +27,7 @@ export interface TooltipContentData {
 	close: string;
 	high: string;
 	low: string;
+	percent: string;
 }
 
 export interface TooltipPosition {
@@ -45,6 +46,7 @@ export class TooltipElement {
 	private _closeElement: HTMLDivElement | null;
 	private _highElement: HTMLDivElement | null;
 	private _lowElement: HTMLDivElement | null;
+	private _percentElement: HTMLDivElement | null;
 
 	private _options: TooltipOptions;
 
@@ -130,6 +132,14 @@ export class TooltipElement {
 		setElementText(lowElement, "");
 		element.appendChild(lowElement);
 
+		//percent
+		const percentElement = document.createElement("div");
+		applyStyle(percentElement, {
+			color: "#787B86",
+		});
+		setElementText(percentElement, "");
+		element.appendChild(percentElement);
+
 		this._element = element;
 		this._titleElement = titleElement;
 		this._timeElement = timeElement;
@@ -137,6 +147,7 @@ export class TooltipElement {
 		this._closeElement = closeElement;
 		this._highElement = highElement;
 		this._lowElement = lowElement;
+		this._percentElement = percentElement;
 
 		const chartElement = this._chart.chartElement();
 		chartElement.appendChild(this._element);
@@ -182,6 +193,7 @@ export class TooltipElement {
 		setElementText(this._closeElement, tooltipContentData.close);
 		setElementText(this._highElement, tooltipContentData.high);
 		setElementText(this._lowElement, tooltipContentData.low);
+		setElementText(this._percentElement, tooltipContentData.percent);
 	}
 
 	public updatePosition(positionData: TooltipPosition) {

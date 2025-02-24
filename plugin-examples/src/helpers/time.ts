@@ -32,3 +32,15 @@ export function formattedDateAndTime(timestamp: number | undefined): [string, st
 
 	return [formattedDate, formattedTime];
 }
+
+export function formattedDate(timestamp: number | undefined): string {
+	if (!timestamp) return "";
+	const dateObj = new Date(timestamp);
+
+	// Format date string
+	const year = dateObj.getFullYear();
+	const month = dateObj.toLocaleString('default', { month: 'short' });
+	const date = dateObj.getDate().toString();
+	const formattedDate = `${year} ${month + 1} ${date}`;
+	return formattedDate;
+}

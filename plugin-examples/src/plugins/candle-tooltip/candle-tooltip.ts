@@ -95,6 +95,13 @@ const defaultOptions: TooltipPrimitiveOptions = {
 		}
 		return "";
 	},
+	percentExtractor: (data: LineData | CandlestickData | WhitespaceData) => {
+		if ((data as CandlestickData).low !== undefined) {
+			let d = (data as CandlestickData);
+			return ((d.close - d.open) / d.open * 100).toFixed(2);
+		}
+		return "";
+	},
 };
 
 export interface TooltipPrimitiveOptions {
@@ -104,6 +111,7 @@ export interface TooltipPrimitiveOptions {
 	closeExtractor: <T extends WhitespaceData>(dataPoint: T) => string;
 	highExtractor: <T extends WhitespaceData>(dataPoint: T) => string;
 	lowExtractor: <T extends WhitespaceData>(dataPoint: T) => string;
+	percentExtractor: <T extends WhitespaceData>(dataPoint: T) => string;
 }
 
 export class TooltipPrimitive implements ISeriesPrimitive<Time> {
@@ -209,6 +217,7 @@ export class TooltipPrimitive implements ISeriesPrimitive<Time> {
 			close: "",
 			high: "",
 			low: "",
+			percent: ''
 		});
 		this._tooltip.updatePosition({
 			paneX: 0,
@@ -244,6 +253,7 @@ export class TooltipPrimitive implements ISeriesPrimitive<Time> {
 		const close = this._options.closeExtractor(data);
 		const high = this._options.highExtractor(data);
 		const low = this._options.lowExtractor(data);
+		const percent = this._options.percentExtractor(data);
 		const coordinate = chart.timeScale().logicalToCoordinate(logical);
 		const time = formattedDate(
 			param.time ? convertTime(param.time) : undefined
@@ -264,6 +274,7 @@ export class TooltipPrimitive implements ISeriesPrimitive<Time> {
 				close: `收: ${close}`,
 				high: `高: ${high}`,
 				low: `低: ${low}`,
+				percent: `幅: ${percent}%`
 			});
 			this._tooltip.updatePosition({
 				paneX: param.point?.x ?? 0,
