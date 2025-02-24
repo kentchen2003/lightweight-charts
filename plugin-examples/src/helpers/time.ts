@@ -39,8 +39,8 @@ export function formattedDate(timestamp: number | undefined): string {
 
 	// Format date string
 	const year = dateObj.getFullYear();
-	const month = dateObj.toLocaleString('default', { month: 'short' });
+	const month = dateObj.getMonth() + 1;
 	const date = dateObj.getDate().toString();
-	const formattedDate = `${year} ${month + 1} ${date}`;
+	const formattedDate = `${year}-${month}-${date}`;
 	return formattedDate;
 }
